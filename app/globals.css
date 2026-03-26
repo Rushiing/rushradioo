@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-source-serif), "Noto Serif SC", Georgia, serif;
+  --color-paper: #fafaf8;
+  --color-ink: #1a1a18;
+  --color-muted: #5c5c56;
+  --color-line: #e8e6e1;
+  --color-accent: #2d4a3e;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-[var(--color-paper)] text-[var(--color-ink)] antialiased;
+}
+
+/* 瀑布流：多列布局 */
+.feed-masonry {
+  column-count: 1;
+  column-gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .feed-masonry {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .feed-masonry {
+    column-count: 3;
+  }
+}
+
+.feed-card {
+  break-inside: avoid;
+  margin-bottom: 1.25rem;
+}
