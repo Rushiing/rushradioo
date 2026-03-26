@@ -41,9 +41,6 @@ export default async function FeedsPage() {
         <h1 className="font-serif text-3xl font-semibold text-[var(--color-ink)] md:text-4xl">
           Feeds
         </h1>
-        <p className="text-[var(--color-muted)]">
-          轻量图文与摘录，来自 Notion，瀑布流布局。
-        </p>
       </header>
 
       {items.length === 0 ? (

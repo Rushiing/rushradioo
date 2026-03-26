@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 const links = [
-  { href: "/about", label: "关于我" },
+  { href: "/", label: "About" },
   { href: "/blog", label: "Blog" },
   { href: "/feeds", label: "Feeds" },
 ] as const;
@@ -14,9 +14,12 @@ export function SiteNav() {
           href="/"
           className="font-serif text-lg font-medium tracking-tight text-[var(--color-ink)] transition-opacity hover:opacity-70"
         >
-          个人门户
+          RUSHING
         </Link>
-        <nav className="flex flex-wrap items-center justify-end gap-6 text-sm text-[var(--color-muted)]">
+        <nav
+          className="flex flex-wrap items-center justify-end gap-6 text-sm text-[var(--color-muted)]"
+          aria-label="主导航"
+        >
           {links.map(({ href, label }) => (
             <Link
               key={href}
@@ -26,6 +29,13 @@ export function SiteNav() {
               {label}
             </Link>
           ))}
+          <span
+            className="cursor-not-allowed select-none text-[var(--color-muted)] opacity-40"
+            aria-disabled="true"
+            title="敬请期待"
+          >
+            Sections
+          </span>
         </nav>
       </div>
     </header>
@@ -35,7 +45,7 @@ export function SiteNav() {
 export function SiteFooter() {
   return (
     <footer className="mt-24 border-t border-[var(--color-line)] py-10 text-center text-xs text-[var(--color-muted)]">
-      <p>© {new Date().getFullYear()} · 设计与内容归你所有</p>
+      <p>© {new Date().getFullYear()} · RUSH</p>
     </footer>
   );
 }

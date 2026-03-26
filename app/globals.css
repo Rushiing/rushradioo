@@ -1,8 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-source-serif), "Noto Serif SC", Georgia, serif;
+  /* 不依赖 Google Fonts 拉取，避免网络超时导致整页 500 */
+  --font-sans:
+    ui-sans-serif, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "Noto Sans SC", system-ui, sans-serif;
+  --font-serif:
+    ui-serif, "Songti SC", "Noto Serif SC", "Source Han Serif SC", Georgia,
+    serif;
   --color-paper: #fafaf8;
   --color-ink: #1a1a18;
   --color-muted: #5c5c56;

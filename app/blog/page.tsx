@@ -50,9 +50,6 @@ export default async function BlogIndexPage() {
         <h1 className="font-serif text-3xl font-semibold text-[var(--color-ink)] md:text-4xl">
           Blog
         </h1>
-        <p className="text-[var(--color-muted)]">
-          内容来自 Notion，更新后数分钟内会在此同步（ISR）。
-        </p>
       </header>
 
       {posts.length === 0 ? (
@@ -60,25 +57,36 @@ export default async function BlogIndexPage() {
           暂无文章。请在 Notion 数据库中新建页面，并填写标题与 Slug（文本类型）。
         </p>
       ) : (
-        <ul className="divide-y divide-[var(--color-line)] border-t border-[var(--color-line)]">
+        <ul className="flex flex-col gap-5">
           {posts.map((post) => (
             <li key={post.id}>
-              <Link
-                href={`/blog/${post.slug}`}
-                className="group flex flex-col gap-1 py-6 transition-colors md:flex-row md:items-baseline md:justify-between"
-              >
-                <span className="font-medium text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">
-                  {post.title}
-                </span>
-                {post.date && (
-                  <time
-                    dateTime={post.date}
-                    className="shrink-0 text-sm text-[var(--color-muted)]"
-                  >
-                    {post.date}
-                  </time>
-                )}
-              </Link>
+              <article className="rounded-xl border border-[var(--color-line)] bg-white/80 p-5 shadow-sm transition-shadow hover:shadow-md md:p-6">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+                  <div className="min-w-0 flex-1 space-y-2">
+                    <h2 className="font-serif text-lg font-medium leading-snug md:text-xl">
+                      <Link
+                        href={`/blog/${post.slug}`}
+                        className="text-[var(--color-ink)] transition-colors hover:text-[var(--color-accent)]"
+                      >
+                        {post.title}
+                      </Link>
+                    </h2>
+                    {post.excerpt ? (
+                      <p className="text-sm leading-relaxed text-[var(--color-muted)]">
+                        {post.excerpt}
+                      </p>
+                    ) : null}
+                  </div>
+                  {post.date ? (
+                    <time
+                      dateTime={post.date}
+                      className="shrink-0 text-xs tabular-nums text-[var(--color-muted)] sm:pt-1 sm:text-sm"
+                    >
+                      {post.date}
+                    </time>
+                  ) : null}
+                </div>
+              </article>
             </li>
           ))}
         </ul>
