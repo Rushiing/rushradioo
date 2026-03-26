@@ -130,6 +130,17 @@ function blockToPlainText(b: BlockObjectResponse): string {
       return rt(b.callout?.rich_text);
     case "code":
       return rt(b.code?.rich_text);
+    case "table": {
+      /* 仅顶层块：表格正文在子 table_row，浅层遍历时单独处理 */
+      return "";
+    }
+    case "table_row": {
+      const cells = b.table_row?.cells;
+      if (!cells?.length) return "";
+      return cells
+        .map((cell) => cell.map((t) => t.plain_text).join(""))
+        .join(" ");
+    }
     default:
       return "";
   }

@@ -1,5 +1,63 @@
+import type { RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints";
 import type { BlockWithChildren } from "@/lib/notion";
 import { RichText } from "@/components/rich-text";
+
+/** Notion 表格：子块为 table_row，cells 为富文本二维数组 */
+function NotionTable({ block }: { block: BlockWithChildren }) {
+  if (block.type !== "table") return null;
+  const rows = block.children?.filter((c) => c.type === "table_row") ?? [];
+  const hasColHeader = block.table?.has_column_header ?? false;
+  const hasRowHeader = block.table?.has_row_header ?? false;
+
+  const thClass =
+    "border border-[var(--color-line)] bg-[var(--color-line)]/30 px-3 py-2 text-left font-medium text-[var(--color-ink)]";
+  const tdClass =
+    "border border-[var(--color-line)] px-3 py-2 align-top text-[var(--color-ink)]";
+
+  const renderHeaderRow = (cells: RichTextItemResponse[][]) =>
+    cells.map((cell, ci) => (
+      <th key={ci} scope="col" className={thClass}>
+        {cell.length ? <RichText items={cell} /> : null}
+      </th>
+    ));
+
+  const renderBodyRow = (cells: RichTextItemResponse[][]) =>
+    cells.map((cell, ci) => {
+      const isRowHead = hasRowHeader && ci === 0;
+      if (isRowHead) {
+        return (
+          <th key={ci} scope="row" className={thClass}>
+            {cell.length ? <RichText items={cell} /> : null}
+          </th>
+        );
+      }
+      return (
+        <td key={ci} className={tdClass}>
+          {cell.length ? <RichText items={cell} /> : null}
+        </td>
+      );
+    });
+
+  const headRow = hasColHeader && rows.length > 0 ? rows[0] : null;
+  const bodyRows = hasColHeader ? rows.slice(1) : rows;
+
+  return (
+    <div className="my-8 w-full overflow-x-auto overflow-y-visible">
+      <table className="w-full min-w-[min(100%,36rem)] border-collapse border border-[var(--color-line)] text-sm">
+        {headRow ? (
+          <thead>
+            <tr>{renderHeaderRow(headRow.table_row.cells)}</tr>
+          </thead>
+        ) : null}
+        <tbody>
+          {bodyRows.map((row) => (
+            <tr key={row.id}>{renderBodyRow(row.table_row.cells)}</tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
 
 function ListGroup({
   blocks,
@@ -163,6 +221,26 @@ function BlockInner({ block }: { block: BlockWithChildren }) {
             )}
           </span>
         </div>
+      );
+    case "table":
+      return <NotionTable block={block} />;
+    case "table_row":
+      /* 仅作为 table 的子块由 NotionTable 渲染；若单独出现则忽略 */
+      return null;
+    case "toggle":
+      return (
+        <details className="my-4 rounded-lg border border-[var(--color-line)] bg-white/40 p-4 open:bg-white/60">
+          <summary className="cursor-pointer list-none font-medium text-[var(--color-ink)] [&::-webkit-details-marker]:hidden">
+            {block.toggle?.rich_text && (
+              <RichText items={block.toggle.rich_text} />
+            )}
+          </summary>
+          {block.children?.length ? (
+            <div className="mt-4 border-t border-[var(--color-line)] pt-4 pl-1">
+              <NotionBlocks blocks={block.children} />
+            </div>
+          ) : null}
+        </details>
       );
     default:
       return null;
