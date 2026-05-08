@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getLocalBlogPosts } from "@/lib/content";
 import { getBlogPosts, notionConfigured } from "@/lib/notion";
 
 export const metadata: Metadata = {
@@ -9,81 +10,82 @@ export const metadata: Metadata = {
 export const revalidate = 120;
 
 export default async function BlogIndexPage() {
-  if (!notionConfigured) {
-    return (
-      <div className="mx-auto max-w-3xl space-y-6">
-        <h1 className="font-serif text-3xl font-semibold text-[var(--color-ink)]">
-          Blog
-        </h1>
-        <p className="leading-relaxed text-[var(--color-muted)]">
-          尚未配置 Notion：请在项目根目录复制{" "}
-          <code className="rounded bg-[var(--color-line)] px-1.5 py-0.5 text-sm">
-            .env.example
-          </code>{" "}
-          为{" "}
-          <code className="rounded bg-[var(--color-line)] px-1.5 py-0.5 text-sm">
-            .env.local
-          </code>
-          ，填写{" "}
-          <code className="rounded bg-[var(--color-line)] px-1.5 py-0.5 text-sm">
-            NOTION_API_KEY
-          </code>{" "}
-          与{" "}
-          <code className="rounded bg-[var(--color-line)] px-1.5 py-0.5 text-sm">
-            NOTION_BLOG_DATABASE_ID
-          </code>
-          ，并在 Vercel 项目 Environment Variables 中同步。将 Notion
-          数据库分享给该集成后，文章会在此列出。
-        </p>
-      </div>
-    );
-  }
-
-  const posts = await getBlogPosts();
+  const localPosts = await getLocalBlogPosts();
+  const notionPosts =
+    localPosts.length === 0 && notionConfigured ? await getBlogPosts() : [];
+  const posts = localPosts.length
+    ? localPosts
+    : notionPosts.map((post) => ({
+        ...post,
+        tags: [] as string[],
+        eyebrow: null as string | null,
+      }));
 
   return (
-    <div className="mx-auto max-w-3xl space-y-10">
-      <header className="space-y-2">
-        <p className="text-sm uppercase tracking-[0.2em] text-[var(--color-muted)]">
-          Writing
+    <div className="mx-auto max-w-4xl space-y-12">
+      <header className="grid gap-8 border-b border-[var(--color-line)] pb-10 md:grid-cols-[1fr_18rem] md:items-end">
+        <div className="space-y-4">
+          <p className="section-label">Longform</p>
+          <h1 className="font-serif text-4xl font-semibold leading-tight text-[var(--color-ink)] md:text-6xl">
+            Blogs
+          </h1>
+        </div>
+        <p className="max-w-sm text-sm leading-relaxed text-[var(--color-muted)] md:justify-self-end">
+          长文本保留完整的推理、感受和结构。这里会优先读取 Obsidian/Markdown
+          文件，也兼容当前 Notion 数据源。
         </p>
-        <h1 className="font-serif text-3xl font-semibold text-[var(--color-ink)] md:text-4xl">
-          Blog
-        </h1>
       </header>
 
       {posts.length === 0 ? (
-        <p className="text-[var(--color-muted)]">
-          暂无文章。请在 Notion 数据库中新建页面，并填写标题与 Slug（文本类型）。
-        </p>
+        <div className="empty-panel">
+          <p className="section-label">Ready for drafts</p>
+          <h2 className="font-serif text-2xl font-semibold text-[var(--color-ink)]">
+            还没有发布长文
+          </h2>
+          <p className="max-w-xl leading-relaxed text-[var(--color-muted)]">
+            在 <code>content/blogs</code> 中新增 Markdown 或 MDX 文件，状态设为{" "}
+            <code>published</code> 后就会出现在这里。
+          </p>
+        </div>
       ) : (
-        <ul className="flex flex-col gap-5">
+        <ul className="space-y-5">
           {posts.map((post) => (
             <li key={post.id}>
-              <article className="rounded-xl border border-[var(--color-line)] bg-white/80 p-5 shadow-sm transition-shadow hover:shadow-md md:p-6">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
-                  <div className="min-w-0 flex-1 space-y-2">
-                    <h2 className="font-serif text-lg font-medium leading-snug md:text-xl">
-                      <Link
-                        href={`/blog/${post.slug}`}
-                        className="text-[var(--color-ink)] transition-colors hover:text-[var(--color-accent)]"
-                      >
-                        {post.title}
-                      </Link>
-                    </h2>
-                    {post.excerpt ? (
-                      <p className="text-sm leading-relaxed text-[var(--color-muted)]">
-                        {post.excerpt}
-                      </p>
-                    ) : null}
-                  </div>
+              <article className="content-card group grid gap-5 p-5 md:grid-cols-[9rem_1fr] md:p-6">
+                <div className="space-y-2 text-xs uppercase tracking-[0.15em] text-[var(--color-muted)]">
                   {post.date ? (
-                    <time
-                      dateTime={post.date}
-                      className="shrink-0 text-xs tabular-nums text-[var(--color-muted)] sm:pt-1 sm:text-sm"
-                    >
+                    <time dateTime={post.date} className="block tabular-nums">
                       {post.date}
                     </time>
+                  ) : null}
+                  {post.eyebrow ? (
+                    <p className="leading-relaxed normal-case tracking-normal text-[var(--color-muted)]">
+                      {post.eyebrow}
+                    </p>
+                  ) : null}
+                  {"tags" in post && post.tags.length ? (
+                    <div className="flex flex-wrap gap-2 normal-case tracking-normal">
+                      {post.tags.slice(0, 3).map((tag) => (
+                        <span key={tag} className="tag-chip">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+                <div className="min-w-0 space-y-3">
+                  <h2 className="font-serif text-2xl font-semibold leading-snug">
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      className="text-[var(--color-ink)] transition-colors group-hover:text-[var(--color-accent)]"
+                    >
+                      {post.title}
+                    </Link>
+                  </h2>
+                  {post.excerpt ? (
+                    <p className="max-w-2xl leading-relaxed text-[var(--color-muted)]">
+                      {post.excerpt}
+                    </p>
                   ) : null}
                 </div>
               </article>

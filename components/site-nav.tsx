@@ -1,20 +1,20 @@
 import Link from "next/link";
 
 const links = [
-  { href: "/", label: "About" },
-  { href: "/blog", label: "Blog" },
+  { href: "/", label: "Index" },
+  { href: "/blog", label: "Blogs" },
   { href: "/feeds", label: "Feeds" },
 ] as const;
 
 export function SiteNav() {
   return (
-    <header className="border-b border-[var(--color-line)] bg-[var(--color-paper)]/90 backdrop-blur-sm">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-5 md:px-6">
+    <header className="sticky top-0 z-20 border-b border-[var(--color-line)] bg-[var(--color-paper)]/88 backdrop-blur-md">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-4 md:px-6">
         <Link
           href="/"
-          className="font-serif text-lg font-medium tracking-tight text-[var(--color-ink)] transition-opacity hover:opacity-70"
+          className="font-serif text-lg font-semibold tracking-tight text-[var(--color-ink)] transition-opacity hover:opacity-70"
         >
-          RUSHING
+          RUSH RADIOO
         </Link>
         <nav
           className="flex flex-wrap items-center justify-end gap-6 text-sm text-[var(--color-muted)]"
@@ -29,13 +29,6 @@ export function SiteNav() {
               {label}
             </Link>
           ))}
-          <span
-            className="cursor-not-allowed select-none text-[var(--color-muted)] opacity-40"
-            aria-disabled="true"
-            title="敬请期待"
-          >
-            Sections
-          </span>
         </nav>
       </div>
     </header>
@@ -44,8 +37,11 @@ export function SiteNav() {
 
 export function SiteFooter() {
   return (
-    <footer className="mt-24 border-t border-[var(--color-line)] py-10 text-center text-xs text-[var(--color-muted)]">
-      <p>© {new Date().getFullYear()} · RUSH</p>
+    <footer className="mt-24 border-t border-[var(--color-line)] py-10">
+      <div className="mx-auto flex max-w-6xl flex-col gap-3 px-5 text-xs text-[var(--color-muted)] md:flex-row md:items-center md:justify-between md:px-6">
+        <p>© {new Date().getFullYear()} · RUSH</p>
+        <p>Blogs, feeds, and working notes.</p>
+      </div>
     </footer>
   );
 }

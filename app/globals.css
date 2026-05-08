@@ -10,9 +10,12 @@
     serif;
   --color-paper: #fafaf8;
   --color-ink: #1a1a18;
-  --color-muted: #5c5c56;
-  --color-line: #e8e6e1;
-  --color-accent: #2d4a3e;
+  --color-muted: #666158;
+  --color-line: #e3ded4;
+  --color-accent: #315a52;
+  --color-accent-soft: #9bb7ac;
+  --color-wash: #f1eee6;
+  --color-card: #fffdfa;
 }
 
 html {
@@ -21,12 +24,66 @@ html {
 
 body {
   @apply bg-[var(--color-paper)] text-[var(--color-ink)] antialiased;
+  background-image:
+    linear-gradient(rgba(49, 90, 82, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(49, 90, 82, 0.04) 1px, transparent 1px);
+  background-size: 42px 42px;
+  background-position: center top;
+}
+
+code {
+  font-family:
+    "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+.section-label {
+  @apply text-xs font-medium uppercase text-[var(--color-muted)];
+  letter-spacing: 0.16em;
+}
+
+.content-card {
+  @apply border border-[var(--color-line)] bg-[var(--color-card)]/88 shadow-sm backdrop-blur-sm transition;
+  border-radius: 8px;
+  box-shadow: 0 18px 50px rgba(38, 34, 28, 0.06);
+}
+
+.content-card:hover {
+  border-color: color-mix(in oklab, var(--color-accent) 28%, var(--color-line));
+  box-shadow: 0 22px 60px rgba(38, 34, 28, 0.09);
+}
+
+.empty-panel {
+  @apply border border-dashed border-[var(--color-line)] bg-[var(--color-card)]/70 p-6;
+  border-radius: 8px;
+}
+
+.tag-chip {
+  @apply inline-flex items-center border border-[var(--color-line)] bg-[var(--color-wash)] px-2 py-0.5 text-xs text-[var(--color-muted)];
+  border-radius: 999px;
+}
+
+.button-primary,
+.button-ghost {
+  @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium transition;
+  border-radius: 999px;
+}
+
+.button-primary {
+  @apply bg-[var(--color-ink)] text-[var(--color-paper)] hover:bg-[var(--color-accent)];
+}
+
+.button-ghost {
+  @apply border border-[var(--color-line)] bg-[var(--color-card)]/75 text-[var(--color-ink)] hover:border-[var(--color-accent-soft)];
+}
+
+.article-body {
+  @apply border-b border-[var(--color-line)] pb-12;
 }
 
 /* 瀑布流：多列布局 */
 .feed-masonry {
   column-count: 1;
-  column-gap: 1.25rem;
+  column-gap: 1rem;
 }
 
 @media (min-width: 640px) {
@@ -43,5 +100,13 @@ body {
 
 .feed-card {
   break-inside: avoid;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.feed-card:nth-child(3n + 1) {
+  border-top-color: color-mix(in oklab, var(--color-accent) 36%, var(--color-line));
+}
+
+.article-body > :first-child {
+  margin-top: 0;
 }
