@@ -166,9 +166,9 @@ function excerptFrom(body: string, data: Frontmatter): string {
 
 function blogEyebrow(data: Frontmatter): string | null {
   const parts = [
-    stringField(data, ["dynasty"]),
+    stringField(data, ["period", "dynasty"]),
     stringField(data, ["location", "province"]),
-    stringField(data, ["type"]),
+    stringField(data, ["category", "type"]),
   ].filter(Boolean);
   return parts.length ? parts.slice(0, 2).join(" / ") : null;
 }

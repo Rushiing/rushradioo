@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: {
     absolute: "RUSHING",
   },
-  description: "Rush 的长文本、知识条目与个人系统。",
+  description: "Rush Radioo 的长文档案与知识条目。",
 };
 
 export default async function HomePage() {
@@ -43,31 +43,29 @@ export default async function HomePage() {
       <section className="grid min-h-[54vh] gap-10 border-b border-[var(--color-line)] pb-14 md:grid-cols-[1fr_21rem] md:items-end md:pb-20">
         <div className="max-w-3xl space-y-8">
           <div className="space-y-4">
-            <p className="section-label">Personal knowledge field</p>
+            <p className="section-label">Knowledge archive</p>
             <h1 className="font-serif text-5xl font-semibold leading-[1.02] text-[var(--color-ink)] md:text-7xl">
               Rush Radioo
             </h1>
           </div>
           <p className="max-w-2xl text-xl leading-[1.8] text-[var(--color-muted)]">
-            一个面向长文本与短知识条目的个人发布系统。记录 AI native
-            生产、感知采样、生活系统，以及那些尚未被归类的信号。
+            一座面向长文档案与知识条目的个人索引。这里收录建筑、历史、技术与生活系统中的观察、材料和判断。
           </p>
           <div className="flex flex-wrap gap-3">
             <Link href="/blog" className="button-primary">
-              Read Blogs
+              阅读长文
             </Link>
             <Link href="/feeds" className="button-ghost">
-              Browse Feeds
+              浏览条目
             </Link>
           </div>
         </div>
 
         <aside className="content-card grid gap-4 p-5">
           <div>
-            <p className="section-label">Current shape</p>
+            <p className="section-label">Archive status</p>
             <p className="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">
-              Markdown/MDX 优先，Notion 暂时作为 fallback。Obsidian
-              可以成为内容写作入口。
+              长文与条目按统一字段归档，便于检索、扩展和持续修订。
             </p>
           </div>
           <div className="grid grid-cols-2 gap-3 border-t border-[var(--color-line)] pt-4">
@@ -95,16 +93,15 @@ export default async function HomePage() {
         <div className="space-y-4">
           <p className="section-label">About</p>
           <h2 className="font-serif text-3xl font-semibold leading-tight text-[var(--color-ink)]">
-            在比特与原子的缝隙间采样
+            从现场、材料与系统中提取结构
           </h2>
         </div>
         <div className="space-y-5 text-[var(--color-muted)] leading-[1.9]">
           <p>
-            我是一个在 0 与 1 的荒原中修筑花园的数字炼金术士。这里会逐渐沉淀长文本、知识碎片、方法论和正在成形的个人系统。
+            Rush Radioo 以长文保留完整脉络，以知识条目记录可复用的概念、事实与线索。
           </p>
           <p>
-            对我而言，写作不是发布后的定稿，而是持续观察、修正和复用的过程。Blogs
-            保留完整结构，Feeds 捕捉更轻的信号。
+            内容从个人学习和实地观察中生长，经整理后进入公开档案，供之后的写作、研究和项目引用。
           </p>
         </div>
       </section>
@@ -113,7 +110,7 @@ export default async function HomePage() {
         <div className="space-y-5">
           <div className="flex items-end justify-between gap-4">
             <div>
-              <p className="section-label">Latest longform</p>
+              <p className="section-label">Latest essays</p>
               <h2 className="font-serif text-2xl font-semibold text-[var(--color-ink)]">
                 Blogs
               </h2>
@@ -122,7 +119,7 @@ export default async function HomePage() {
               href="/blog"
               className="text-sm font-medium text-[var(--color-accent)]"
             >
-              View all
+              查看全部
             </Link>
           </div>
           <div className="space-y-4">
@@ -165,9 +162,9 @@ export default async function HomePage() {
             ))}
             {posts.length === 0 ? (
               <div className="empty-panel">
-                <p className="section-label">No blogs yet</p>
+                <p className="section-label">No essays</p>
                 <p className="text-[var(--color-muted)]">
-                  第一篇长文会从 <code>content/blogs</code> 进入这里。
+                  暂无公开长文。
                 </p>
               </div>
             ) : null}
@@ -177,7 +174,7 @@ export default async function HomePage() {
         <div className="space-y-5">
           <div className="flex items-end justify-between gap-4">
             <div>
-              <p className="section-label">Latest notes</p>
+              <p className="section-label">Latest entries</p>
               <h2 className="font-serif text-2xl font-semibold text-[var(--color-ink)]">
                 Feeds
               </h2>
@@ -186,7 +183,7 @@ export default async function HomePage() {
               href="/feeds"
               className="text-sm font-medium text-[var(--color-accent)]"
             >
-              View all
+              查看全部
             </Link>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -226,9 +223,9 @@ export default async function HomePage() {
             ))}
             {feeds.length === 0 ? (
               <div className="empty-panel sm:col-span-2">
-                <p className="section-label">No feeds yet</p>
+                <p className="section-label">No entries</p>
                 <p className="text-[var(--color-muted)]">
-                  短知识条目会从 <code>content/feeds</code> 进入这里。
+                  暂无公开知识条目。
                 </p>
               </div>
             ) : null}

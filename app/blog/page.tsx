@@ -31,20 +31,18 @@ export default async function BlogIndexPage() {
           </h1>
         </div>
         <p className="max-w-sm text-sm leading-relaxed text-[var(--color-muted)] md:justify-self-end">
-          长文本保留完整的推理、感受和结构。这里会优先读取 Obsidian/Markdown
-          文件，也兼容当前 Notion 数据源。
+          长文用于保存完整脉络、材料来源与结构化判断，适合持续修订和反复引用。
         </p>
       </header>
 
       {posts.length === 0 ? (
         <div className="empty-panel">
-          <p className="section-label">Ready for drafts</p>
+          <p className="section-label">No essays</p>
           <h2 className="font-serif text-2xl font-semibold text-[var(--color-ink)]">
             还没有发布长文
           </h2>
           <p className="max-w-xl leading-relaxed text-[var(--color-muted)]">
-            在 <code>content/blogs</code> 中新增 Markdown 或 MDX 文件，状态设为{" "}
-            <code>published</code> 后就会出现在这里。
+            公开档案整理完成后会在这里呈现。
           </p>
         </div>
       ) : (

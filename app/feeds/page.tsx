@@ -33,19 +33,18 @@ export default async function FeedsPage() {
           </h1>
         </div>
         <p className="max-w-sm text-sm leading-relaxed text-[var(--color-muted)] md:justify-self-end">
-          短文本、截图、链接和知识碎片。它们可以保持轻盈，也可以在未来被合成长文。
+          知识条目用于记录概念、定义、线索与可复用判断，是长文之外的轻量档案。
         </p>
       </header>
 
       {items.length === 0 ? (
         <div className="empty-panel">
-          <p className="section-label">Open slots</p>
+          <p className="section-label">No entries</p>
           <h2 className="font-serif text-2xl font-semibold text-[var(--color-ink)]">
             还没有知识条目
           </h2>
           <p className="max-w-xl leading-relaxed text-[var(--color-muted)]">
-            在 <code>content/feeds</code> 中放入 Markdown 文件，配好标题、日期和标签，
-            就能作为卡片发布。
+            公开条目整理完成后会在这里呈现。
           </p>
         </div>
       ) : (
@@ -109,7 +108,7 @@ export default async function FeedsPage() {
                   href={`/feeds/${item.slug}`}
                   className="mt-4 inline-block text-xs font-medium uppercase tracking-[0.14em] text-[var(--color-accent)]"
                 >
-                  Read note
+                  阅读全文
                 </Link>
               ) : null}
               {item.sourceUrl ? (

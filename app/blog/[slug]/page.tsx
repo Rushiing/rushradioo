@@ -29,6 +29,15 @@ function readingMinutes(text: string): number {
   return Math.max(1, Math.ceil(chars / 500));
 }
 
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function withoutLeadingTitle(body: string, title: string): string {
+  const pattern = new RegExp(`^#\\s+${escapeRegExp(title)}[^\\n]*\\n+`);
+  return body.replace(pattern, "");
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug: rawSlug } = await params;
   const slug = normalizeSlug(rawSlug);
@@ -103,7 +112,9 @@ export default async function BlogPostPage({ params }: Props) {
               {localPost.title}
             </h1>
           </header>
-          <MarkdownContent body={localPost.body} />
+          <MarkdownContent
+            body={withoutLeadingTitle(localPost.body, localPost.title)}
+          />
         </div>
       </article>
     );
